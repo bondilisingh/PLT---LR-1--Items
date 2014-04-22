@@ -5,8 +5,11 @@ using namespace std;
 string prod[10];
 list<char> listArr[30][10];
 int n[30];
-int n0;
 int anand = 1;
+char nonTerm[10];
+
+//FUNCTIONS
+void nonTermList();
 void print();
 void gotoo();
 void termList();
@@ -27,19 +30,48 @@ int main(){
             strcpy(prodChar, prod[i].c_str());
             listArr[0][i].assign(prodChar,prodChar+m); 
     }
-    termList();
+    nonTermList();
     gotoo();
     print();
     system("pause");
 }
 //CREATING A SET OF TERMINALS
-void termList()
+void nonTermList()
 {
-     
+     for(int i=0;i<n[0];i++)
+     {
+             list<char>::iterator it = listArr[0][i].begin();
+             nonTerm[i] = *it;
+     }
+     cout<<"\nNon-Terminals List:"<<nonTerm<<endl;
+        
+        
 }
 void closure()
 {
-     
+     for(int i=1;i<=anand;i++)
+     {
+             for(j=0;j<n[i];j++)
+             {
+                list<char>::iterator it= listArr[i][j].begin();
+                while(*it!='.') it++;
+                
+                listArr[anand+1][j].assign(listArr[i][j].begin(),listArr[i][j].end());
+                list<char>::iterator it = listArr[anand+1][j].begin();
+                while(*it!='.')
+                   advance(it,1);
+                char temp = *it;   it--;   *it=temp; it++ ; *it='.'; it++;
+                int g = 1;
+                for(t=0;t<nonTerm.length();t++)
+                {
+                    if(*it == nonTerm[t])
+                    {
+                           listArr[anand+1][j+g].assign(listArr[i][t].begin(),listArr[i][t].end())
+                           g++;
+                    }                            
+                }
+             }
+     }
  }
  
 //PRODUCING I0 GOTO FUNCTION
